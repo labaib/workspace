@@ -1,13 +1,6 @@
 title: "[VOTAZIONE] "
 labels: ["votazione"]
 body:
-  - type: input
-    id: proposta
-    attributes:
-      label: Titolo della proposta
-      placeholder: Inserisci titolo della proposta approvata
-    validations:
-      required: true
   - type: textarea
     id: descrizione
     attributes:
