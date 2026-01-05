@@ -3,10 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>LabAIB</title>
+  <title>Workspace Collaborativo AIB</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <style>
-    /* BODY & FONT */
     body {
       font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
       background-color: #f7f8fa;
@@ -22,13 +21,8 @@
       text-align: center;
       margin-bottom: 3rem;
     }
-    header h1 {
-      margin: 0.2rem 0;
-      font-weight: 700;
-    }
-    header p {
-      font-size: 1.2rem;
-    }
+    header h1 { margin: 0.2rem 0; font-weight: 700; }
+    header p { font-size: 1.2rem; }
 
     /* DASHBOARD CARDS */
     .card {
@@ -36,23 +30,10 @@
       transition: transform 0.3s, box-shadow 0.3s;
       border-radius: 12px;
     }
-    .card:hover {
-      transform: translateY(-8px);
-      box-shadow: 0 12px 24px rgba(0,0,0,0.2);
-    }
-    .card-body {
-      padding: 2rem;
-    }
-
-    .card-title {
-      font-size: 1.4rem;
-      font-weight: 600;
-      margin-bottom: 0.5rem;
-    }
-    .card-text {
-      font-size: 1rem;
-      color: #555;
-    }
+    .card:hover { transform: translateY(-8px); box-shadow: 0 12px 24px rgba(0,0,0,0.2); }
+    .card-body { padding: 2rem; }
+    .card-title { font-size: 1.4rem; font-weight: 600; margin-bottom: 0.5rem; }
+    .card-text { font-size: 1rem; color: #555; }
 
     /* COLORS PER CATEGORY */
     .annunci { background-color: #ffe5e0; }
@@ -71,10 +52,12 @@
       flex-wrap: wrap;
       justify-content: center;
     }
-    .col-card {
-      flex: 1 1 250px;
-      max-width: 300px;
-    }
+    .col-card { flex: 1 1 250px; max-width: 300px; }
+
+    /* TOPICS SECTION */
+    #topics-container { margin-top: 2rem; }
+    .back-btn { margin-bottom: 1rem; }
+    .search-bar { margin-bottom: 1rem; }
   </style>
 </head>
 <body>
@@ -84,62 +67,116 @@
   </header>
 
   <main class="container">
-    <div class="row g-4">
-      <div class="col-card">
-        <div class="card annunci text-center" onclick="openSection('annunci')">
-          <div class="card-body">
-            <h5 class="card-title">📢 Annunci</h5>
-            <p class="card-text">Leggi tutti gli annunci ufficiali dell'associazione</p>
-          </div>
-        </div>
-      </div>
-      <div class="col-card">
-        <div class="card documentazione text-center" onclick="openSection('documentazione')">
-          <div class="card-body">
-            <h5 class="card-title">📘 Documentazione</h5>
-            <p class="card-text">Consulta guide, manuali e materiale ufficiale</p>
-          </div>
-        </div>
-      </div>
-      <div class="col-card">
-        <div class="card generale text-center" onclick="openSection('generale')">
-          <div class="card-body">
-            <h5 class="card-title">💬 Generale</h5>
-            <p class="card-text">Discussioni generali e confronto tra membri</p>
-          </div>
-        </div>
-      </div>
-      <div class="col-card">
-        <div class="card proposte text-center" onclick="openSection('proposte')">
-          <div class="card-body">
-            <h5 class="card-title">🧠 Proposte</h5>
-            <p class="card-text">Presenta idee e suggerimenti alla comunità</p>
-          </div>
-        </div>
-      </div>
-      <div class="col-card">
-        <div class="card qna text-center" onclick="openSection('qna')">
-          <div class="card-body">
-            <h5 class="card-title">❓ Q&A</h5>
-            <p class="card-text">Fai domande e trova risposte dai colleghi</p>
-          </div>
-        </div>
-      </div>
-      <div class="col-card">
-        <div class="card votazioni text-center" onclick="openSection('votazioni')">
-          <div class="card-body">
-            <h5 class="card-title">🗳️ Votazioni</h5>
-            <p class="card-text">Partecipa ai voti su proposte approvate</p>
-          </div>
-        </div>
-      </div>
-    </div>
+    <!-- DASHBOARD CARDS -->
+    <div id="dashboard" class="row g-4"></div>
+
+    <!-- CONTAINER PER I TOPICS -->
+    <div id="topics-container"></div>
   </main>
 
   <script>
-    function openSection(section) {
-      alert(`Apri sezione: ${section}`);
+    const OWNER = 'TUO_ORG'; // sostituire con il tuo org
+    const REPO = 'TUO_REPO'; // sostituire con il tuo repo
+    let currentTopics = []; // memorizza i topics correnti della sezione per la ricerca
+
+    // Legge tutte le discussion (solo lettura)
+    async function fetchDiscussions() {
+      const response = await fetch(`https://api.github.com/repos/${OWNER}/${REPO}/discussions?per_page=100`, {
+        headers: { Accept: 'application/vnd.github.v3+json' }
+      });
+      const discussions = await response.json();
+      const sections = {};
+      discussions.forEach(d => {
+        const cat = d.category.name;
+        if (!sections[cat]) sections[cat] = [];
+        sections[cat].push({
+          title: d.title,
+          url: d.html_url,
+          body: d.body
+        });
+      });
+      return sections;
     }
+
+    // Render dashboard dinamica
+    async function renderDashboard() {
+      const sections = await fetchDiscussions();
+      const container = document.getElementById('dashboard');
+      container.innerHTML = '';
+      const categories = ['Annunci','Documentazione','Generale','Proposte','Q&A','Votazioni'];
+
+      categories.forEach(cat => {
+        const count = sections[cat] ? sections[cat].length : 0;
+        const div = document.createElement('div');
+        div.classList.add('col-card');
+        const catClass = cat.toLowerCase().replace(/\s/g, '');
+        div.innerHTML = `
+          <div class="card ${catClass} text-center" onclick="openSection('${cat}')">
+            <div class="card-body">
+              <h5 class="card-title">${cat}</h5>
+              <p class="card-text">Topics: ${count}</p>
+            </div>
+          </div>
+        `;
+        container.appendChild(div);
+      });
+    }
+
+    // Apri sezione e mostra topics + search
+    async function openSection(category) {
+      const sections = await fetchDiscussions();
+      const topics = sections[category] || [];
+      currentTopics = topics; // memorizza per la ricerca
+
+      const container = document.getElementById('topics-container');
+      container.innerHTML = `
+        <button class="btn btn-secondary back-btn" onclick="backToDashboard()">← Torna alla Dashboard</button>
+        <h3>${category}</h3>
+        <input type="text" id="searchInput" class="form-control search-bar" placeholder="Cerca nei topics..." oninput="filterTopics()">
+        <div id="topics-list"></div>
+      `;
+      renderTopics(topics);
+      document.getElementById('dashboard').style.display = 'none';
+    }
+
+    // Mostra lista di topics
+    function renderTopics(topics) {
+      const listContainer = document.getElementById('topics-list');
+      listContainer.innerHTML = '';
+      if(topics.length === 0) {
+        listContainer.innerHTML = '<p>Nessun topic trovato.</p>';
+        return;
+      }
+      topics.forEach(d => {
+        const div = document.createElement('div');
+        div.classList.add('card', 'mb-2');
+        div.innerHTML = `
+          <div class="card-body">
+            <h5 class="card-title">${d.title}</h5>
+            <p class="card-text">${d.body.substring(0, 150)}${d.body.length > 150 ? '...' : ''}</p>
+            <a href="${d.url}" target="_blank" class="btn btn-sm btn-primary">Apri su GitHub</a>
+          </div>
+        `;
+        listContainer.appendChild(div);
+      });
+    }
+
+    // Filtra topics in base alla ricerca
+    function filterTopics() {
+      const query = document.getElementById('searchInput').value.toLowerCase();
+      const filtered = currentTopics.filter(t => 
+        t.title.toLowerCase().includes(query) || t.body.toLowerCase().includes(query)
+      );
+      renderTopics(filtered);
+    }
+
+    function backToDashboard() {
+      document.getElementById('topics-container').innerHTML = '';
+      document.getElementById('dashboard').style.display = 'flex';
+    }
+
+    // Inizializza
+    renderDashboard();
   </script>
 </body>
 </html>
