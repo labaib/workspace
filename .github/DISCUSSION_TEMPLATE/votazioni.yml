@@ -1,0 +1,28 @@
+title: "[VOTAZIONE] "
+labels: ["votazione"]
+default_category: "Votazioni"
+body:
+  - type: input
+    id: proposta
+    attributes:
+      label: Titolo della proposta
+      placeholder: Inserisci titolo della proposta approvata
+    validations:
+      required: true
+  - type: textarea
+    id: descrizione
+    attributes:
+      label: Descrizione della proposta
+      placeholder: Copia la descrizione dalla proposta originale
+    validations:
+      required: true
+  - type: dropdown
+    id: voto
+    attributes:
+      label: Come vuoi votare?
+      options:
+        - "Favorevole"
+        - "Contrario"
+        - "Astenuto"
+    validations:
+      required: true
