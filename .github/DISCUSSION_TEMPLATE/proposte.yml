@@ -1,24 +1,17 @@
 title: "[PROPOSTA] "
 labels: ["proposta"]
 body:
-  - type: input
-    id: titolo
-    attributes:
-      label: Titolo della proposta
-      placeholder: Es. Linee guida per gestione archivi digitali
-    validations:
-      required: true
   - type: textarea
     id: descrizione
     attributes:
-      label: Descrizione
+      label: Contesto
       placeholder: Descrivi contesto, obiettivi e destinatari
     validations:
       required: true
   - type: textarea
     id: richiesta
     attributes:
-      label: Cosa chiedi alla comunità?
+      label: Proposta
       placeholder: Es. commenti, adesioni, revisione
     validations:
       required: true
