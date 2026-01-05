@@ -3,79 +3,141 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dashboard AIB</title>
+  <title>LabAIB</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <style>
+    /* BODY & FONT */
     body {
-      padding: 2rem;
+      font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+      background-color: #f7f8fa;
+      color: #333;
+      margin: 0;
     }
+
+    /* HEADER */
+    header {
+      background-color: #0056a6;
+      color: white;
+      padding: 2rem 1rem;
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+    header h1 {
+      margin: 0.2rem 0;
+      font-weight: 700;
+    }
+    header p {
+      font-size: 1.2rem;
+    }
+
+    /* DASHBOARD CARDS */
     .card {
       cursor: pointer;
-      transition: transform 0.2s, box-shadow 0.2s;
+      transition: transform 0.3s, box-shadow 0.3s;
+      border-radius: 12px;
     }
     .card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+      transform: translateY(-8px);
+      box-shadow: 0 12px 24px rgba(0,0,0,0.2);
+    }
+    .card-body {
+      padding: 2rem;
+    }
+
+    .card-title {
+      font-size: 1.4rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+    .card-text {
+      font-size: 1rem;
+      color: #555;
+    }
+
+    /* COLORS PER CATEGORY */
+    .annunci { background-color: #ffe5e0; }
+    .documentazione { background-color: #e0f0ff; }
+    .generale { background-color: #fff4e0; }
+    .proposte { background-color: #e0ffe5; }
+    .qna { background-color: #fff0ff; }
+    .votazioni { background-color: #f0fff0; }
+
+    /* LAYOUT GRID */
+    .row.g-4 {
+      margin: 0;
+      row-gap: 2rem;
+      column-gap: 2rem;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .col-card {
+      flex: 1 1 250px;
+      max-width: 300px;
     }
   </style>
 </head>
 <body>
-  <h1 class="mb-4">Workspace Collaborativo AIB</h1>
+  <header>
+    <h1>Workspace Collaborativo AIB</h1>
+    <p>Un punto unico per consultare annunci, documentazione e partecipare alla comunità</p>
+  </header>
 
-  <div class="row g-4">
-    <div class="col-md-4">
-      <div class="card text-center" onclick="openSection('annunci')">
-        <div class="card-body">
-          <h5 class="card-title">📢 Annunci</h5>
-          <p class="card-text">Leggi tutti gli annunci ufficiali dell'associazione</p>
+  <main class="container">
+    <div class="row g-4">
+      <div class="col-card">
+        <div class="card annunci text-center" onclick="openSection('annunci')">
+          <div class="card-body">
+            <h5 class="card-title">📢 Annunci</h5>
+            <p class="card-text">Leggi tutti gli annunci ufficiali dell'associazione</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-card">
+        <div class="card documentazione text-center" onclick="openSection('documentazione')">
+          <div class="card-body">
+            <h5 class="card-title">📘 Documentazione</h5>
+            <p class="card-text">Consulta guide, manuali e materiale ufficiale</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-card">
+        <div class="card generale text-center" onclick="openSection('generale')">
+          <div class="card-body">
+            <h5 class="card-title">💬 Generale</h5>
+            <p class="card-text">Discussioni generali e confronto tra membri</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-card">
+        <div class="card proposte text-center" onclick="openSection('proposte')">
+          <div class="card-body">
+            <h5 class="card-title">🧠 Proposte</h5>
+            <p class="card-text">Presenta idee e suggerimenti alla comunità</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-card">
+        <div class="card qna text-center" onclick="openSection('qna')">
+          <div class="card-body">
+            <h5 class="card-title">❓ Q&A</h5>
+            <p class="card-text">Fai domande e trova risposte dai colleghi</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-card">
+        <div class="card votazioni text-center" onclick="openSection('votazioni')">
+          <div class="card-body">
+            <h5 class="card-title">🗳️ Votazioni</h5>
+            <p class="card-text">Partecipa ai voti su proposte approvate</p>
+          </div>
         </div>
       </div>
     </div>
-    <div class="col-md-4">
-      <div class="card text-center" onclick="openSection('documentazione')">
-        <div class="card-body">
-          <h5 class="card-title">📘 Documentazione</h5>
-          <p class="card-text">Consulta guide, manuali e materiale ufficiale</p>
-        </div>
-      </div>
-    </div>
-    <div class="col-md-4">
-      <div class="card text-center" onclick="openSection('generale')">
-        <div class="card-body">
-          <h5 class="card-title">💬 Generale</h5>
-          <p class="card-text">Discussioni generali e confronto tra membri</p>
-        </div>
-      </div>
-    </div>
-    <div class="col-md-4">
-      <div class="card text-center" onclick="openSection('proposte')">
-        <div class="card-body">
-          <h5 class="card-title">🧠 Proposte</h5>
-          <p class="card-text">Presenta idee e suggerimenti alla comunità</p>
-        </div>
-      </div>
-    </div>
-    <div class="col-md-4">
-      <div class="card text-center" onclick="openSection('qna')">
-        <div class="card-body">
-          <h5 class="card-title">❓ Q&A</h5>
-          <p class="card-text">Fai domande e trova risposte dai colleghi</p>
-        </div>
-      </div>
-    </div>
-    <div class="col-md-4">
-      <div class="card text-center" onclick="openSection('votazioni')">
-        <div class="card-body">
-          <h5 class="card-title">🗳️ Votazioni</h5>
-          <p class="card-text">Partecipa ai voti su proposte approvate</p>
-        </div>
-      </div>
-    </div>
-  </div>
+  </main>
 
   <script>
     function openSection(section) {
-      // per ora solo alert, poi lo sostituiremo con navigazione alla sezione
       alert(`Apri sezione: ${section}`);
     }
   </script>
