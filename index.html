@@ -72,6 +72,33 @@
   <main class="container">
     <div id="dashboard" class="row g-4"></div>
     <div id="topics-container"></div>
+    <div class="row mb-4">
+      <div class="col-md-4">
+        <div class="card text-center" style="background-color:#f0f0f0;" onclick="window.open('https://github.com/join', '_blank')">
+          <div class="card-body">
+            <h5 class="card-title">👤 Registrati a GitHub</h5>
+            <p class="card-text">Crea un account GitHub per partecipare alle discussion</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card text-center" style="background-color:#f0f0f0;" onclick="window.open('https://github.com/TUO_ORG/TUO_REPO/subscription', '_blank')">
+          <div class="card-body">
+            <h5 class="card-title">🔔 Notifiche email</h5>
+            <p class="card-text">Attiva le notifiche per ricevere aggiornamenti direttamente via mail</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card text-center" style="background-color:#f0f0f0;" onclick="window.open('LINK_GUIDA', '_blank')">
+          <div class="card-body">
+            <h5 class="card-title">📖 Guida introduttiva</h5>
+            <p class="card-text">Scopri come usare la dashboard e GitHub Discussions</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
   </main>
 
   <script>
@@ -140,6 +167,12 @@
       container.innerHTML = `
         <button class="btn btn-secondary back-btn" onclick="backToDashboard()">← Torna alla Dashboard</button>
         <h3>${category}</h3>
+
+        <!-- BOTTONE NUOVA DISCUSSIONE -->
+        <button class="btn btn-success mb-3" onclick="window.open(getNewDiscussionLink(category), '_blank')">
+          📝 ${category === 'Q&A' ? 'Nuova domanda' : category === 'Votazioni' ? 'Nuova votazione' : 'Nuova discussione'}
+        </button>
+  
         <input type="text" id="searchInput" class="form-control search-bar" placeholder="Cerca nei topics..." oninput="filterTopics()">
         <div id="topics-list"></div>
       `;
@@ -180,6 +213,20 @@
       document.getElementById('topics-container').innerHTML = '';
       document.getElementById('dashboard').style.display = 'flex';
     }
+
+    function getNewDiscussionLink(category) {
+      const categoryMapping = {
+        "Annunci": "Annunci",
+        "Documentazione": "Documentazione",
+        "Generale": "Generale",
+        "Proposte": "Proposte",
+        "Q&A": "Q&A",
+        "Votazioni": "Votazioni"
+      };
+      const catName = encodeURIComponent(categoryMapping[category]);
+      return `https://github.com/${OWNER}/${REPO}/discussions/new?category=${catName}`;
+    }
+
 
     renderDashboard();
   </script>
