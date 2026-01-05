@@ -1,6 +1,5 @@
 title: "[DISCUSSIONE] "
 labels: ["discussione"]
-default_category: "Generale"
 body:
   - type: input
     id: titolo
