@@ -1,6 +1,5 @@
 title: "[DOMANDA] "
 labels: ["domanda"]
-default_category: "Q&A"
 body:
   - type: input
     id: titolo
