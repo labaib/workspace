@@ -1,6 +1,6 @@
 title: "TITOLO ANNUNCIO"
 labels: ["annuncio"]
-default_category: "Annunci"
+category: "Annunci"
 body:
   - type: markdown
     attributes:
