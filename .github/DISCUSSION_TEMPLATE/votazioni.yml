@@ -1,15 +1,20 @@
-title: "[Titolo]"
+title: "[VOTAZIONE] Titolo della votazione"
 labels: ["votazione"]
 body:
-  - type: textarea
-    id: descrizione
-    attributes:
-      label: Descrizione della proposta
-      placeholder: Copia la descrizione dalla proposta originale
-    validations:
-      required: true
   - type: markdown
     attributes:
       value: |
-        /poll "Qual è la tua preferenza?" "Favorevole" "Contrario" "Astenuto"
+        ⚠️ Questa votazione si riferisce alla proposta originale. Leggi prima la proposta:
+
+        [Apri proposta originale]({{PROPOSTA_URL}})
+
+  - type: textarea
+    id: descrizione
+    attributes:
+      label: Breve descrizione della votazione
+      placeholder: Inserisci qui il testo della votazione
+    validations:
+      required: true
+
+  
 
