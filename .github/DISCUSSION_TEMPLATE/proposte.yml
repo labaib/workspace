@@ -1,0 +1,30 @@
+title: "[PROPOSTA] "
+labels: ["proposta"]
+default_category: "Proposte"
+body:
+  - type: input
+    id: titolo
+    attributes:
+      label: Titolo della proposta
+      placeholder: Es. Linee guida per gestione archivi digitali
+    validations:
+      required: true
+  - type: textarea
+    id: descrizione
+    attributes:
+      label: Descrizione
+      placeholder: Descrivi contesto, obiettivi e destinatari
+    validations:
+      required: true
+  - type: textarea
+    id: richiesta
+    attributes:
+      label: Cosa chiedi alla comunità?
+      placeholder: Es. commenti, adesioni, revisione
+    validations:
+      required: true
+  - type: input
+    id: link-votazione
+    attributes:
+      label: Link alla votazione (opzionale)
+      placeholder: Inserisci link alla votazione quando approvata
