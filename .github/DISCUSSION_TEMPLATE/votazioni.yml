@@ -1,4 +1,4 @@
-title: ""
+title: "[Titolo]"
 labels: ["votazione"]
 body:
   - type: textarea
