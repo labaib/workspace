@@ -1,6 +1,5 @@
 title: "[VOTAZIONE] "
 labels: ["votazione"]
-default_category: "Votazioni"
 body:
   - type: input
     id: proposta
