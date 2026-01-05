@@ -1,8 +1,5 @@
-name: Annuncio
-description: Comunicazione ufficiale AIB.
 title: "[ANNUNCIO] "
 labels: ["annuncio"]
-category: "Annunci"
 body:
   - type: markdown
     attributes:
