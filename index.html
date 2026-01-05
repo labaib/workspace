@@ -3,106 +3,81 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>LabAIB</title>
+  <title>Dashboard AIB</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <style>
-    body { padding: 2rem; }
-    .card { cursor: pointer; transition: transform 0.2s, box-shadow 0.2s; }
-    .card:hover { transform: translateY(-5px); box-shadow: 0 8px 20px rgba(0,0,0,0.2); }
-    #topics-container { margin-top: 2rem; }
-    .back-btn { margin-bottom: 1rem; }
+    body {
+      padding: 2rem;
+    }
+    .card {
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+    }
   </style>
 </head>
 <body>
-  <h1 class="mb-4">AIB Workspace</h1>
+  <h1 class="mb-4">Workspace Collaborativo AIB</h1>
 
-  <!-- Dashboard cards -->
-  <div id="dashboard" class="row g-4"></div>
-
-  <!-- Container per i topics della sezione selezionata -->
-  <div id="topics-container"></div>
+  <div class="row g-4">
+    <div class="col-md-4">
+      <div class="card text-center" onclick="openSection('annunci')">
+        <div class="card-body">
+          <h5 class="card-title">📢 Annunci</h5>
+          <p class="card-text">Leggi tutti gli annunci ufficiali dell'associazione</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card text-center" onclick="openSection('documentazione')">
+        <div class="card-body">
+          <h5 class="card-title">📘 Documentazione</h5>
+          <p class="card-text">Consulta guide, manuali e materiale ufficiale</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card text-center" onclick="openSection('generale')">
+        <div class="card-body">
+          <h5 class="card-title">💬 Generale</h5>
+          <p class="card-text">Discussioni generali e confronto tra membri</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card text-center" onclick="openSection('proposte')">
+        <div class="card-body">
+          <h5 class="card-title">🧠 Proposte</h5>
+          <p class="card-text">Presenta idee e suggerimenti alla comunità</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card text-center" onclick="openSection('qna')">
+        <div class="card-body">
+          <h5 class="card-title">❓ Q&A</h5>
+          <p class="card-text">Fai domande e trova risposte dai colleghi</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card text-center" onclick="openSection('votazioni')">
+        <div class="card-body">
+          <h5 class="card-title">🗳️ Votazioni</h5>
+          <p class="card-text">Partecipa ai voti su proposte approvate</p>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <script>
-    const OWNER = 'labaib';
-    const REPO = 'workspace';
-
-    // Funzione per leggere le discussion via GitHub API
-    async function fetchDiscussions() {
-      const response = await fetch(`https://api.github.com/repos/${OWNER}/${REPO}/discussions?per_page=100`, {
-        headers: { Accept: 'application/vnd.github.v3+json' }
-      });
-      const discussions = await response.json();
-
-      // Raggruppa per categoria
-      const sections = {};
-      discussions.forEach(d => {
-        const cat = d.category.name;
-        if (!sections[cat]) sections[cat] = [];
-        sections[cat].push({
-          title: d.title,
-          url: d.html_url,
-          body: d.body
-        });
-      });
-      return sections;
+    function openSection(section) {
+      // per ora solo alert, poi lo sostituiremo con navigazione alla sezione
+      alert(`Apri sezione: ${section}`);
     }
-
-    // Render della dashboard
-    async function renderDashboard() {
-      const sections = await fetchDiscussions();
-      const container = document.getElementById('dashboard');
-      container.innerHTML = '';
-
-      Object.keys(sections).forEach(cat => {
-        const div = document.createElement('div');
-        div.classList.add('col-md-4');
-        div.innerHTML = `
-          <div class="card text-center" onclick="openSection('${cat}')">
-            <div class="card-body">
-              <h5 class="card-title">${cat}</h5>
-              <p class="card-text">Topics: ${sections[cat].length}</p>
-            </div>
-          </div>
-        `;
-        container.appendChild(div);
-      });
-    }
-
-    // Apri sezione selezionata e mostra i topics
-    async function openSection(category) {
-      const sections = await fetchDiscussions();
-      const topics = sections[category] || [];
-      const container = document.getElementById('topics-container');
-      container.innerHTML = `
-        <button class="btn btn-secondary back-btn" onclick="backToDashboard()">← Torna alla Dashboard</button>
-        <h3>${category}</h3>
-      `;
-
-      topics.forEach(d => {
-        const div = document.createElement('div');
-        div.classList.add('card', 'mb-2');
-        div.innerHTML = `
-          <div class="card-body">
-            <h5 class="card-title">${d.title}</h5>
-            <p class="card-text">${d.body.substring(0, 150)}${d.body.length > 150 ? '...' : ''}</p>
-            <a href="${d.url}" target="_blank" class="btn btn-sm btn-primary">Apri su GitHub</a>
-          </div>
-        `;
-        container.appendChild(div);
-      });
-
-      // Nascondi dashboard
-      document.getElementById('dashboard').style.display = 'none';
-    }
-
-    // Torna alla dashboard
-    function backToDashboard() {
-      document.getElementById('topics-container').innerHTML = '';
-      document.getElementById('dashboard').style.display = 'flex';
-    }
-
-    // Inizializza
-    renderDashboard();
   </script>
 </body>
 </html>
