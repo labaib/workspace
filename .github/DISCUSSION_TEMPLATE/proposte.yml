@@ -1,6 +1,5 @@
 title: "[PROPOSTA] "
 labels: ["proposta"]
-default_category: "Proposte"
 body:
   - type: input
     id: titolo
