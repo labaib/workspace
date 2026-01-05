@@ -1,6 +1,5 @@
 title: "📘 "
 labels: ["documentazione"]
-default_category: "Documentazione"
 body:
   - type: markdown
     attributes:
