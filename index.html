@@ -29,11 +29,18 @@
       cursor: pointer;
       transition: transform 0.3s, box-shadow 0.3s;
       border-radius: 12px;
+      position: relative;
+      padding: 1rem;
     }
-    .card:hover { transform: translateY(-8px); box-shadow: 0 12px 24px rgba(0,0,0,0.2); }
-    .card-body { padding: 2rem; }
-    .card-title { font-size: 1.4rem; font-weight: 600; margin-bottom: 0.5rem; }
-    .card-text { font-size: 1rem; color: #555; }
+    .card:hover { transform: translateY(-6px); box-shadow: 0 10px 20px rgba(0,0,0,0.2); }
+    .card-title { font-size: 1.3rem; font-weight: 600; }
+    .card-text { font-size: 0.95rem; color: #555; }
+    .badge-topics {
+      position: absolute;
+      top: 10px;
+      right: 15px;
+      font-size: 0.9rem;
+    }
 
     /* COLORS PER CATEGORY */
     .annunci { background-color: #ffe5e0; }
@@ -43,15 +50,11 @@
     .qna { background-color: #fff0ff; }
     .votazioni { background-color: #f0fff0; }
 
+    /* ICONS */
+    .icon { font-size: 1.5rem; margin-right: 0.5rem; }
+
     /* LAYOUT GRID */
-    .row.g-4 {
-      margin: 0;
-      row-gap: 2rem;
-      column-gap: 2rem;
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-    }
+    .row.g-4 { margin: 0; row-gap: 2rem; column-gap: 2rem; display: flex; flex-wrap: wrap; justify-content: center; }
     .col-card { flex: 1 1 250px; max-width: 300px; }
 
     /* TOPICS SECTION */
@@ -67,19 +70,25 @@
   </header>
 
   <main class="container">
-    <!-- DASHBOARD CARDS -->
     <div id="dashboard" class="row g-4"></div>
-
-    <!-- CONTAINER PER I TOPICS -->
     <div id="topics-container"></div>
   </main>
 
   <script>
-    const OWNER = 'labaib'; // sostituire con il tuo org
-    const REPO = 'workspace'; // sostituire con il tuo repo
-    let currentTopics = []; // memorizza i topics correnti della sezione per la ricerca
+    const OWNER = 'labaib';
+    const REPO = 'workspace';
+    let currentTopics = [];
 
-    // Legge tutte le discussion (solo lettura)
+    // Icone per categoria
+    const categoryIcons = {
+      "Annunci": "📢",
+      "Documentazione": "📘",
+      "Generale": "💬",
+      "Proposte": "🧠",
+      "Q&A": "❓",
+      "Votazioni": "🗳️"
+    };
+
     async function fetchDiscussions() {
       const response = await fetch(`https://api.github.com/repos/${OWNER}/${REPO}/discussions?per_page=100`, {
         headers: { Accept: 'application/vnd.github.v3+json' }
@@ -98,7 +107,6 @@
       return sections;
     }
 
-    // Render dashboard dinamica
     async function renderDashboard() {
       const sections = await fetchDiscussions();
       const container = document.getElementById('dashboard');
@@ -111,10 +119,11 @@
         div.classList.add('col-card');
         const catClass = cat.toLowerCase().replace(/\s/g, '');
         div.innerHTML = `
-          <div class="card ${catClass} text-center" onclick="openSection('${cat}')">
-            <div class="card-body">
-              <h5 class="card-title">${cat}</h5>
-              <p class="card-text">Topics: ${count}</p>
+          <div class="card ${catClass}" onclick="openSection('${cat}')">
+            <span class="badge bg-primary badge-topics">${count}</span>
+            <div class="card-body text-center">
+              <div class="card-title"><span class="icon">${categoryIcons[cat]}</span>${cat}</div>
+              <p class="card-text">Apri e consulta i topics della sezione</p>
             </div>
           </div>
         `;
@@ -122,11 +131,10 @@
       });
     }
 
-    // Apri sezione e mostra topics + search
     async function openSection(category) {
       const sections = await fetchDiscussions();
       const topics = sections[category] || [];
-      currentTopics = topics; // memorizza per la ricerca
+      currentTopics = topics;
 
       const container = document.getElementById('topics-container');
       container.innerHTML = `
@@ -139,7 +147,6 @@
       document.getElementById('dashboard').style.display = 'none';
     }
 
-    // Mostra lista di topics
     function renderTopics(topics) {
       const listContainer = document.getElementById('topics-list');
       listContainer.innerHTML = '';
@@ -161,7 +168,6 @@
       });
     }
 
-    // Filtra topics in base alla ricerca
     function filterTopics() {
       const query = document.getElementById('searchInput').value.toLowerCase();
       const filtered = currentTopics.filter(t => 
@@ -175,7 +181,6 @@
       document.getElementById('dashboard').style.display = 'flex';
     }
 
-    // Inizializza
     renderDashboard();
   </script>
 </body>
