@@ -1,12 +1,13 @@
-title: "[VOTAZIONE] Titolo della votazione"
+title: "Titolo della votazione"
 labels: ["votazione"]
 body:
-  - type: markdown
+  - type: input
+    id: proposta_url
     attributes:
-      value: |
-        ⚠️ Questa votazione si riferisce alla proposta originale. Leggi prima la proposta:
-
-        [Apri proposta originale]({{PROPOSTA_URL}})
+      label: Link alla discussione originale
+      placeholder: Inserisci qui l'URL della proposta da votare
+    validations:
+      required: true
 
   - type: textarea
     id: descrizione
@@ -16,5 +17,4 @@ body:
     validations:
       required: true
 
-  
 
