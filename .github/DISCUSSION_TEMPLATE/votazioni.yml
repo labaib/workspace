@@ -1,4 +1,4 @@
-title: "[VOTAZIONE] "
+title: ""
 labels: ["votazione"]
 body:
   - type: textarea
@@ -8,13 +8,8 @@ body:
       placeholder: Copia la descrizione dalla proposta originale
     validations:
       required: true
-  - type: dropdown
-    id: voto
+  - type: markdown
     attributes:
-      label: Come vuoi votare?
-      options:
-        - "Favorevole"
-        - "Contrario"
-        - "Astenuto"
-    validations:
-      required: true
+      value: |
+        /poll "Qual è la tua preferenza?" "Favorevole" "Contrario" "Astenuto"
+
